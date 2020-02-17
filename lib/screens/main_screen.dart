@@ -14,34 +14,49 @@ Widget getSquare() {
   ;
 }
 
-class _MainScreenState extends State<MainScreen> {
+class _MainScreenState extends State<MainScreen>
+    with SingleTickerProviderStateMixin {
+  Animation<double> animation;
+  AnimationController controller;
+
+  @override
+  void initState() {
+    super.initState();
+    controller = AnimationController(
+        duration: const Duration(milliseconds: 300), vsync: this);
+    animation = Tween<double>(begin: 5, end: 100).animate((controller))
+      ..addListener(() {
+        setState(() {});
+      });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: <Widget>[
-          Container(
-            color: Colors.red,
-            child: DragTarget(
-              builder: (context, candidate, rejected) {
-                return Container(
-                  height: 100,
-                  width: 0.5,
-                  color: Colors.green,
-                );
-              },
-              onWillAccept: (data) {
-                print('Target: onWillAccept()');
-                return true;
-              },
-              onAccept: (data) {
-                print('Target: onAccept()');
-              },
-              onLeave: (data) {
-                print('Target: onLeave()');
-              },
-            ),
+          DragTarget(
+            builder: (context, candidate, rejected) {
+              return Container(
+                height: 100,
+                width: animation.value,
+                color: Colors.green,
+              );
+            },
+            onWillAccept: (data) {
+              print('Target: onWillAccept()');
+              controller.forward();
+              return true;
+            },
+            onAccept: (data) {
+              print('Target: onAccept()');
+            },
+            onLeave: (data) {
+              print('Target: onLeave()');
+              Future.delayed(Duration(milliseconds: 300));
+              controller.reverse();
+            },
           ),
           Container(
             height: 100,
@@ -56,6 +71,12 @@ class _MainScreenState extends State<MainScreen> {
         ],
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
   }
 }
 
