@@ -16,47 +16,36 @@ Widget getSquare() {
 
 class _MainScreenState extends State<MainScreen>
     with SingleTickerProviderStateMixin {
-  Animation<double> animation;
-  AnimationController controller;
+  List<Widget> playList = [getSquare(), getSquare(), getSquare()];
 
   @override
   void initState() {
+    changePlayList();
     super.initState();
-    controller = AnimationController(
-        duration: const Duration(milliseconds: 300), vsync: this);
-    animation = Tween<double>(begin: 5, end: 100).animate((controller))
-      ..addListener(() {
-        setState(() {});
-      });
   }
 
   @override
   Widget build(BuildContext context) {
     return Container(
+      height: 150,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: <Widget>[
-          DragTarget(
-            builder: (context, candidate, rejected) {
-              return Container(
-                height: 100,
-                width: animation.value,
-                color: Colors.green,
-              );
-            },
-            onWillAccept: (data) {
-              print('Target: onWillAccept()');
-              controller.forward();
-              return true;
-            },
-            onAccept: (data) {
-              print('Target: onAccept()');
-            },
-            onLeave: (data) {
-              print('Target: onLeave()');
-              Future.delayed(Duration(milliseconds: 300));
-              controller.reverse();
-            },
+          Container(
+            height: 150,
+            width: MediaQuery.of(context).size.width * 0.5,
+            child: ListView.builder(
+              scrollDirection: Axis.horizontal,
+              itemCount: playList.length,
+              itemBuilder: (context, index) {
+                final item = playList[index];
+                if (item is TargetableSpace) {
+                  return TargetableSpace();
+                } else {
+                  return getSquare();
+                }
+              },
+            ),
           ),
           Container(
             height: 100,
@@ -73,12 +62,109 @@ class _MainScreenState extends State<MainScreen>
     );
   }
 
+  void changePlayList() {
+    playList.insert(0, TargetableSpace());
+
+    for (int i = 1; i < playList.length; i++) {
+      if (!i.isEven) {
+        playList.insert(i, TargetableSpace());
+      }
+    }
+    playList.add(TargetableSpace());
+  }
+}
+
+class TargetableSpace extends StatefulWidget {
+  @override
+  _TargetableSpaceState createState() => _TargetableSpaceState();
+}
+
+class _TargetableSpaceState extends State<TargetableSpace>
+    with TickerProviderStateMixin {
+  Animation<double> animation;
+  AnimationController controller;
+
+  @override
+  Widget build(BuildContext context) {
+    return DragTarget(
+      builder: (context, candidate, rejected) {
+        return Container(
+          height: 100,
+          width: animation.value,
+          color: Colors.green,
+        );
+      },
+      onWillAccept: (data) {
+        print('Target: onWillAccept()');
+        controller.forward();
+        return true;
+      },
+      onAccept: (data) {
+        print('Target: onAccept()');
+      },
+      onLeave: (data) {
+        print('Target: onLeave()');
+        Future.delayed(Duration(milliseconds: 300));
+        controller.reverse();
+      },
+    );
+  }
+
+  @override
+  void initState() {
+    controller = AnimationController(
+        duration: const Duration(milliseconds: 300), vsync: this);
+    animation = Tween<double>(begin: 10, end: 100).animate((controller))
+      ..addListener(() {
+        setState(() {});
+      });
+
+    super.initState();
+  }
+
   @override
   void dispose() {
     controller.dispose();
     super.dispose();
   }
 }
+
+/*class TargetableSpace extends StatelessWidget {
+  const TargetableSpace({
+    Key key,
+    @required this.animation,
+    @required this.controller,
+  }) : super(key: key);
+
+  final Animation<double> animation;
+  final AnimationController controller;
+
+  @override
+  Widget build(BuildContext context) {
+    return DragTarget(
+      builder: (context, candidate, rejected) {
+        return Container(
+          height: 100,
+          width: animation.value,
+          color: Colors.green,
+        );
+      },
+      onWillAccept: (data) {
+        print('Target: onWillAccept()');
+        controller.forward();
+        return true;
+      },
+      onAccept: (data) {
+        print('Target: onAccept()');
+      },
+      onLeave: (data) {
+        print('Target: onLeave()');
+        Future.delayed(Duration(milliseconds: 300));
+        controller.reverse();
+      },
+    );
+  }
+}*/
 
 class TargetItem {}
 
