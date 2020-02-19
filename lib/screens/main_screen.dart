@@ -20,19 +20,18 @@ class _MainScreenState extends State<MainScreen>
   @override
   void initState() {
     initPlayList();
-    changePlayList();
+    arrangeListWithTargetSpaces();
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 150,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: <Widget>[
           Container(
-            height: 150,
+            height: 100,
             width: MediaQuery.of(context).size.width * 0.5,
             child: ListView.builder(
               scrollDirection: Axis.horizontal,
@@ -64,7 +63,7 @@ class _MainScreenState extends State<MainScreen>
     playList.add(ClipItem(Colors.black, 2));
   }
 
-  void changePlayList() {
+  void arrangeListWithTargetSpaces() {
     for (int i = 1; i < playList.length; i++) {
       if (!i.isEven) {
         playList.insert(i, TargetableSpace(i));
@@ -110,9 +109,9 @@ class _TargetableSpaceState extends State<TargetableSpace>
         controller.forward();
         return true;
       },
-      onAccept: (MaterialColor color) {
+      onAccept: (ClipItem clipItem) {
         //print('Target: onAccept()');
-        widgetColor = color;
+        widgetColor = clipItem.color;
         print('COLORS!!!!!');
       },
       onLeave: (data) {
@@ -159,10 +158,23 @@ class ClipItem extends StatefulWidget {
 class _ClipItemState extends State<ClipItem> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 100,
-      width: 100,
-      color: widget.color,
+    return Draggable(
+      child: Container(
+        height: 100,
+        width: 100,
+        color: widget.color,
+      ),
+      childWhenDragging: Container(
+        height: 100,
+        width: 100,
+        color: widget.color.withOpacity(0.4),
+      ),
+      feedback: Container(
+        height: 100,
+        width: 100,
+        color: widget.color,
+      ),
+      data: widget,
     );
   }
 }
