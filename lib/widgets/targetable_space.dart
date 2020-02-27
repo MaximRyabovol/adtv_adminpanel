@@ -19,7 +19,7 @@ class _TargetableSpaceState extends State<TargetableSpace>
     with TickerProviderStateMixin {
   Animation<double> animation;
   AnimationController controller;
-  Color widgetColor = Colors.green;
+  Color widgetColor = Colors.transparent;
 
   @override
   Widget build(BuildContext context) {
