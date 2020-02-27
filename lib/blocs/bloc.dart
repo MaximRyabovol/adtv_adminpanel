@@ -30,9 +30,8 @@ class Bloc {
     playList.add(ClipItem(Colors.blue, 0));
     playList.add(ClipItem(Colors.red, 1));
     playList.add(ClipItem(Colors.black, 2));
-    playList.add(ClipItem(Colors.amber, 3));
-    playList.add(ClipItem(Colors.cyanAccent, 4));
-    playList.add(ClipItem(Colors.deepPurple, 5));
+    playList.add(ClipItem(Colors.amber, 2));
+    playList.add(ClipItem(Colors.deepPurpleAccent, 2));
     arrangeListWithTargetSpaces();
     _notify();
   }
@@ -44,61 +43,34 @@ class Bloc {
     ClipItem insertClip = target.child;
     insertClip.setIndex(targetOldIndex);
 
-    if (targetOldIndex == playList.length - 1) {
-      playList.removeLast();
-      insertClip.setIndex(playList.length - 1);
-      playList.insert(playList.length, TargetableSpace(0));
-      playList.insert(playList.length, insertClip);
-      playList.insert(playList.length, TargetableSpace(0));
-      playList.removeRange(insertClipOldIndex - 1, insertClipOldIndex + 1);
-      setIndexPlayListItems();
-    } else {
-      print('targetOldIndex: $targetOldIndex');
-      print('insertClipOldIndex: $insertClipOldIndex');
-      if (insertClipOldIndex - 1 < 0) {
-        playList.removeAt(insertClipOldIndex - 1);
-      }
-      if (insertClipOldIndex + 1 < playList.length) {
-        playList.removeAt(insertClipOldIndex + 1);
-      }
-      playList.removeAt(insertClipOldIndex);
+    playList.remove(insertClip);
 
-      insertClip.setIndex(targetOldIndex);
-      playList.replaceRange(
-          targetOldIndex, targetOldIndex, [TargetableSpace(0), insertClip]);
+    playList.insert(targetOldIndex, insertClip);
+    clearPlayList();
+    arrangeListWithTargetSpaces();
+    setIndexPlayListItems();
 
-      setIndexPlayListItems();
-    }
     _notify();
   }
 
-  void insertTargetsSpaces(BasePlayListItem baseItem) {
-    int start = baseItem.index - 1;
-    print('START: $start');
-    int end = baseItem.index;
-    print('END: $end');
-
-    if (start < 0) {
-      start = 0;
+  void clearPlayList() {
+    for (BasePlayListItem item in playList) {
+      if (item is TargetableSpace) {
+        print('!!');
+        playList.remove(item);
+      }
     }
-
-    if (end > playList.length - 1) {
-      end = playList.length - 1;
-    }
-
-    playList.insert(start, TargetableSpace(start));
-    playList.insert(end, TargetableSpace(end));
-    setIndexPlayListItems();
   }
 
   void arrangeListWithTargetSpaces() {
+    clearPlayList();
     for (int i = 1; i < playList.length; i++) {
       if (!i.isEven) {
         playList.insert(i, TargetableSpace(i));
       }
     }
     playList.insert(0, TargetableSpace(0));
-    playList.add(TargetableSpace(playList.length - 1));
+    playList.insert(playList.length, TargetableSpace(playList.length - 1));
 
     setIndexPlayListItems();
   }
