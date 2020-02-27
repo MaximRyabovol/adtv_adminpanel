@@ -56,7 +56,6 @@ class Bloc {
   void clearPlayList() {
     for (BasePlayListItem item in playList) {
       if (item is TargetableSpace) {
-        print('!!');
         playList.remove(item);
       }
     }

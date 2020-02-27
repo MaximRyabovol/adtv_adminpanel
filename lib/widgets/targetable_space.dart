@@ -1,10 +1,10 @@
+import 'dart:math';
 import 'package:flutter/material.dart';
 import 'clip_item.dart';
 import 'base_play_list_Item.dart';
 import '../blocs/provider.dart';
 
 class TargetableSpace extends BasePlayListItem {
-  //final int position;
   ClipItem child = null;
 
   TargetableSpace(int position) {
@@ -35,8 +35,11 @@ class _TargetableSpaceState extends State<TargetableSpace>
               color: widgetColor,
             );
           },
-          onWillAccept: (data) {
-            //print('Target: onWillAccept()');
+          onWillAccept: (ClipItem clipItem) {
+            var v = (widget.index - clipItem.index).abs();
+            if (v <= 1) {
+              return false;
+            }
             controller.forward();
             return true;
           },
@@ -44,10 +47,8 @@ class _TargetableSpaceState extends State<TargetableSpace>
             widget.child = clipItem;
             bloc.handleChangePlayList(widget);
             controller.reverse();
-            //print('COLORS!!!!!');
           },
           onLeave: (data) {
-            //print('Target: onLeave()');
             controller.reverse();
           },
         );
