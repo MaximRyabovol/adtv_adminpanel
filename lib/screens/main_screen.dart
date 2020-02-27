@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import '../widgets/clip_item.dart';
+import '../widgets/targetable_space.dart';
+import '../widgets/base_play_list_Item.dart';
+import '../blocs/provider.dart';
 
 class MainScreen extends StatefulWidget {
   @override
@@ -15,49 +19,60 @@ Widget getSquare() {
 
 class _MainScreenState extends State<MainScreen>
     with SingleTickerProviderStateMixin {
-  List<Widget> playList = [];
+  //List<Widget> playList = [];
 
   @override
   void initState() {
-    initPlayList();
-    arrangeListWithTargetSpaces();
+    //initPlayList();
+    //arrangeListWithTargetSpaces();
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: <Widget>[
-          Container(
-            height: 100,
-            width: MediaQuery.of(context).size.width * 0.5,
-            child: ListView.builder(
-              scrollDirection: Axis.horizontal,
-              itemCount: playList.length,
-              itemBuilder: (context, index) {
-                return playList[index];
-              },
+    final bloc = Provider.of(context);
+
+    return StreamBuilder(
+      stream: bloc.freshPlayList,
+      builder: (BuildContext context,
+          AsyncSnapshot<List<BasePlayListItem>> snapshot) {
+        if (snapshot.hasData) {
+          return Container(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: <Widget>[
+                Container(
+                  height: 100,
+                  width: MediaQuery.of(context).size.width * 0.5,
+                  child: ListView.builder(
+                    scrollDirection: Axis.horizontal,
+                    itemCount: snapshot.data.length,
+                    itemBuilder: (context, index) {
+                      return snapshot.data[index];
+                    },
+                  ),
+                ),
+                Container(
+                  height: 100,
+                  width: 100,
+                  color: Colors.purple,
+                  child: Draggable(
+                    data: Colors.purple,
+                    child: getSquare(),
+                    feedback: getSquare(),
+                    childWhenDragging: Container(),
+                  ),
+                ),
+              ],
             ),
-          ),
-          Container(
-            height: 100,
-            width: 100,
-            color: Colors.purple,
-            child: Draggable(
-              data: Colors.purple,
-              child: getSquare(),
-              feedback: getSquare(),
-              childWhenDragging: Container(),
-            ),
-          ),
-        ],
-      ),
+          );
+        }
+
+        return Container();
+      },
     );
   }
-
-  void initPlayList() {
+/*  void initPlayList() {
     playList.add(ClipItem(Colors.blue, 0));
     playList.add(ClipItem(Colors.red, 1));
     playList.add(ClipItem(Colors.black, 2));
@@ -71,110 +86,5 @@ class _MainScreenState extends State<MainScreen>
     }
     playList.insert(0, TargetableSpace(0));
     playList.add(TargetableSpace(playList.length - 1));
-  }
-}
-
-class TargetableSpace extends StatefulWidget {
-  int position;
-
-  TargetableSpace(this.position);
-
-  int changePosition(int position) {
-    position = position;
-    return position;
-  }
-
-  @override
-  _TargetableSpaceState createState() => _TargetableSpaceState();
-}
-
-class _TargetableSpaceState extends State<TargetableSpace>
-    with TickerProviderStateMixin {
-  Animation<double> animation;
-  AnimationController controller;
-  Color widgetColor = Colors.green;
-
-  @override
-  Widget build(BuildContext context) {
-    return DragTarget(
-      builder: (context, candidate, rejected) {
-        return Container(
-          height: 100,
-          width: animation.value,
-          color: widgetColor,
-        );
-      },
-      onWillAccept: (data) {
-        print('Target: onWillAccept()');
-        controller.forward();
-        return true;
-      },
-      onAccept: (ClipItem clipItem) {
-        //print('Target: onAccept()');
-        widgetColor = clipItem.color;
-        print('COLORS!!!!!');
-      },
-      onLeave: (data) {
-        print('Target: onLeave()');
-        controller.reverse();
-      },
-    );
-  }
-
-  @override
-  void initState() {
-    controller = AnimationController(
-        duration: const Duration(milliseconds: 300), vsync: this);
-    animation = Tween<double>(begin: 10, end: 100).animate((controller))
-      ..addListener(() {
-        setState(() {});
-      });
-
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    controller.dispose();
-    super.dispose();
-  }
-}
-
-class ClipItem extends StatefulWidget {
-  final Color color;
-  int position;
-
-  ClipItem(this.color, this.position);
-
-  int changePosition(int position) {
-    position = position;
-    return position;
-  }
-
-  @override
-  _ClipItemState createState() => _ClipItemState();
-}
-
-class _ClipItemState extends State<ClipItem> {
-  @override
-  Widget build(BuildContext context) {
-    return Draggable(
-      child: Container(
-        height: 100,
-        width: 100,
-        color: widget.color,
-      ),
-      childWhenDragging: Container(
-        height: 100,
-        width: 100,
-        color: widget.color.withOpacity(0.4),
-      ),
-      feedback: Container(
-        height: 100,
-        width: 100,
-        color: widget.color,
-      ),
-      data: widget,
-    );
-  }
+  }*/
 }
