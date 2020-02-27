@@ -41,28 +41,20 @@ class _MainScreenState extends State<MainScreen>
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: <Widget>[
-                Container(
-                  height: 100,
-                  width: MediaQuery.of(context).size.width * 0.5,
-                  child: ListView.builder(
-                    scrollDirection: Axis.horizontal,
-                    itemCount: snapshot.data.length,
-                    itemBuilder: (context, index) {
-                      return snapshot.data[index];
-                    },
+                SingleChildScrollView(
+                  child: Container(
+                    height: 100,
+                    width: MediaQuery.of(context).size.width * 0.5,
+                    child: ListView.builder(
+                      scrollDirection: Axis.horizontal,
+                      itemCount: snapshot.data.length,
+                      itemBuilder: (context, index) {
+                        return snapshot.data[index];
+                      },
+                    ),
                   ),
                 ),
-                Container(
-                  height: 100,
-                  width: 100,
-                  color: Colors.purple,
-                  child: Draggable(
-                    data: Colors.purple,
-                    child: getSquare(),
-                    feedback: getSquare(),
-                    childWhenDragging: Container(),
-                  ),
-                ),
+                ClipItem(Colors.teal, 100),
               ],
             ),
           );
