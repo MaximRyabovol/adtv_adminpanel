@@ -3,7 +3,6 @@ import 'base_play_list_Item.dart';
 
 class ClipItem extends BasePlayListItem {
   final Color color;
-  //final int position;
 
   ClipItem(this.color, int position) {
     super.index = position;
@@ -17,10 +16,24 @@ class _ClipItemState extends State<ClipItem> {
   @override
   Widget build(BuildContext context) {
     return Draggable(
-      child: Container(
-        height: 100,
-        width: 100,
-        color: widget.color,
+      child: GestureDetector(
+        onDoubleTap: () {
+          Dialog dialog = Dialog(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: Container(
+              height: MediaQuery.of(context).size.height * 0.8,
+              width: MediaQuery.of(context).size.width * 0.5,
+            ),
+          );
+          showDialog(context: context, builder: (context) => dialog);
+        },
+        child: Container(
+          height: 100,
+          width: 100,
+          color: widget.color,
+        ),
       ),
       childWhenDragging: Container(
         height: 100,
