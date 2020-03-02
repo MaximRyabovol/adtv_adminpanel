@@ -27,11 +27,23 @@ class Bloc {
 
   Bloc() {
     _changePlayListController.listen(handleChangePlayList);
+    playList.add(ClipItem(Colors.black, 2));
+    playList.add(ClipItem(Colors.amber, 2));
+    playList.add(ClipItem(Colors.deepPurpleAccent, 2));
     playList.add(ClipItem(Colors.blue, 0));
     playList.add(ClipItem(Colors.red, 1));
     playList.add(ClipItem(Colors.black, 2));
     playList.add(ClipItem(Colors.amber, 2));
     playList.add(ClipItem(Colors.deepPurpleAccent, 2));
+    playList.add(ClipItem(Colors.blue, 0));
+    playList.add(ClipItem(Colors.red, 1));
+    playList.add(ClipItem(Colors.black, 2));
+    playList.add(ClipItem(Colors.blue, 0));
+    playList.add(ClipItem(Colors.red, 1));
+    playList.add(ClipItem(Colors.black, 2));
+    playList.add(ClipItem(Colors.blue, 0));
+    playList.add(ClipItem(Colors.red, 1));
+    playList.add(ClipItem(Colors.black, 2));
     arrangeListWithTargetSpaces();
     _notify();
   }
