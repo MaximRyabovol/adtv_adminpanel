@@ -1,18 +1,17 @@
 import 'dart:async';
 import 'package:rxdart/rxdart.dart';
-import 'package:flutter/material.dart';
-import '../widgets/base_play_list_Item.dart';
+
 import '../widgets/targetable_space.dart';
-import '../widgets/clip_item.dart';
+import '../widgets/base_clip_item.dart';
 
 class Bloc {
-  List<BasePlayListItem> playList = [];
+  List<BaseClipItem> playList = [];
 
-  BehaviorSubject<List<BasePlayListItem>> _allPlayListController =
-      BehaviorSubject<List<BasePlayListItem>>();
-  Sink<List<BasePlayListItem>> get inAllPlayList => _allPlayListController.sink;
+  BehaviorSubject<List<BaseClipItem>> _allPlayListController =
+      BehaviorSubject<List<BaseClipItem>>();
+  Sink<List<BaseClipItem>> get inAllPlayList => _allPlayListController.sink;
 
-  Stream<List<BasePlayListItem>> get freshPlayList {
+  Stream<List<BaseClipItem>> get freshPlayList {
     return _allPlayListController.stream;
   }
 
@@ -27,23 +26,8 @@ class Bloc {
 
   Bloc() {
     _changePlayListController.listen(handleChangePlayList);
-    playList.add(ClipItem(Colors.black, 2));
-    playList.add(ClipItem(Colors.amber, 2));
-    playList.add(ClipItem(Colors.deepPurpleAccent, 2));
-    playList.add(ClipItem(Colors.blue, 0));
-    playList.add(ClipItem(Colors.red, 1));
-    playList.add(ClipItem(Colors.black, 2));
-    playList.add(ClipItem(Colors.amber, 2));
-    playList.add(ClipItem(Colors.deepPurpleAccent, 2));
-    playList.add(ClipItem(Colors.blue, 0));
-    playList.add(ClipItem(Colors.red, 1));
-    playList.add(ClipItem(Colors.black, 2));
-    playList.add(ClipItem(Colors.blue, 0));
-    playList.add(ClipItem(Colors.red, 1));
-    playList.add(ClipItem(Colors.black, 2));
-    playList.add(ClipItem(Colors.blue, 0));
-    playList.add(ClipItem(Colors.red, 1));
-    playList.add(ClipItem(Colors.black, 2));
+
+    playList.add(TargetableSpace(0));
     arrangeListWithTargetSpaces();
     _notify();
   }
@@ -52,7 +36,7 @@ class Bloc {
     int targetOldIndex = target.index;
     int insertClipOldIndex = target.child.index;
 
-    ClipItem insertClip = target.child;
+    BaseClipItem insertClip = target.child;
     insertClip.setIndex(targetOldIndex);
 
     playList.remove(insertClip);
@@ -66,7 +50,7 @@ class Bloc {
   }
 
   void clearPlayList() {
-    for (BasePlayListItem item in playList) {
+    for (BaseClipItem item in playList) {
       if (item is TargetableSpace) {
         playList.remove(item);
       }

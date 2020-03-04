@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import '../widgets/clip_item.dart';
-import '../widgets/targetable_space.dart';
-import '../widgets/base_play_list_Item.dart';
+
+import '../widgets/base_clip_item.dart';
 import '../blocs/provider.dart';
+import '../widgets/image_clip_item.dart';
+import '../widgets/video_clip_item.dart';
 
 class MainScreen extends StatefulWidget {
   @override
@@ -58,7 +59,7 @@ class _MainScreenState extends State<MainScreen> {
               StreamBuilder(
                 stream: bloc.freshPlayList,
                 builder: (BuildContext context,
-                    AsyncSnapshot<List<BasePlayListItem>> snapshot) {
+                    AsyncSnapshot<List<BaseClipItem>> snapshot) {
                   if (snapshot.hasData) {
                     return Container(
                       child: Column(
@@ -143,22 +144,34 @@ class _MainScreenState extends State<MainScreen> {
                                     mainAxisSpacing: 10,
                                     crossAxisSpacing: 10,
                                     children: <Widget>[
-                                      ClipItem(Colors.teal, 100),
-                                      ClipItem(Colors.teal, 100),
-                                      ClipItem(Colors.teal, 100),
-                                      ClipItem(Colors.teal, 100),
-                                      ClipItem(Colors.teal, 100),
-                                      ClipItem(Colors.teal, 100),
-                                      ClipItem(Colors.teal, 100),
-                                      ClipItem(Colors.teal, 100),
-                                      ClipItem(Colors.teal, 100),
-                                      ClipItem(Colors.teal, 100),
-                                      ClipItem(Colors.teal, 100),
-                                      ClipItem(Colors.teal, 100),
-                                      ClipItem(Colors.teal, 100),
-                                      ClipItem(Colors.teal, 100),
-                                      ClipItem(Colors.teal, 100),
-                                      ClipItem(Colors.teal, 100),
+                                      ImageClipItem(
+                                        index: 100,
+                                        duration: Duration(minutes: 1),
+                                        dataPath:
+                                            'https://cdn.pixabay.com/photo/2020/02/28/09/42/willow-4887000_1280.jpg',
+                                        name: 'Image #3',
+                                      ),
+                                      ImageClipItem(
+                                        index: 50,
+                                        duration: Duration(minutes: 1),
+                                        dataPath:
+                                            'https://cdn.pixabay.com/photo/2020/02/26/16/30/butterfly-4882217_1280.jpg',
+                                        name: 'Image #2',
+                                      ),
+                                      ImageClipItem(
+                                        index: 34,
+                                        duration: Duration(minutes: 1),
+                                        dataPath:
+                                            'https://cdn.pixabay.com/photo/2020/02/27/20/57/dresden-4885833_1280.jpg',
+                                        name: 'Image #1',
+                                      ),
+                                      VideoClipItem(
+                                        index: 44,
+                                        duration: Duration(minutes: 1),
+                                        dataPath:
+                                            'https://ak3.picdn.net/shutterstock/videos/1011845243/preview/stock-footage--d-render-abstract-seamless-background-looped-animation-fluorescent-ultraviolet-light-glowing.webm',
+                                        name: 'Video #1',
+                                      ),
                                     ],
                                   ),
                                 ),

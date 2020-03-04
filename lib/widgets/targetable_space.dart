@@ -1,11 +1,10 @@
-import 'dart:math';
 import 'package:flutter/material.dart';
-import 'clip_item.dart';
-import 'base_play_list_Item.dart';
-import '../blocs/provider.dart';
 
-class TargetableSpace extends BasePlayListItem {
-  ClipItem child = null;
+import '../blocs/provider.dart';
+import 'base_clip_item.dart';
+
+class TargetableSpace extends BaseClipItem {
+  BaseClipItem child = null;
 
   TargetableSpace(int position) {
     super.index = position;
@@ -19,7 +18,7 @@ class _TargetableSpaceState extends State<TargetableSpace>
     with TickerProviderStateMixin {
   Animation<double> animation;
   AnimationController controller;
-  Color widgetColor = Colors.transparent;
+  Color widgetColor = Colors.lightBlue;
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +34,7 @@ class _TargetableSpaceState extends State<TargetableSpace>
               color: widgetColor,
             );
           },
-          onWillAccept: (ClipItem clipItem) {
+          onWillAccept: (BaseClipItem clipItem) {
             var v = (widget.index - clipItem.index).abs();
             if (v <= 1) {
               return false;
@@ -43,7 +42,7 @@ class _TargetableSpaceState extends State<TargetableSpace>
             controller.forward();
             return true;
           },
-          onAccept: (ClipItem clipItem) {
+          onAccept: (BaseClipItem clipItem) {
             widget.child = clipItem;
             bloc.handleChangePlayList(widget);
             controller.reverse();
