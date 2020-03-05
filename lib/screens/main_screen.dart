@@ -5,6 +5,12 @@ import '../blocs/main_screen_provider.dart';
 import '../widgets/image_item.dart';
 import '../widgets/video_item.dart';
 
+import 'dart:html' as html;
+import 'dart:typed_data';
+import 'dart:async';
+import 'dart:convert';
+import 'package:http_parser/http_parser.dart';
+
 class MainScreen extends StatefulWidget {
   @override
   _MainScreenState createState() => _MainScreenState();
@@ -22,6 +28,12 @@ class _MainScreenState extends State<MainScreen> {
 
     return Scaffold(
       appBar: AppBar(),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          bloc.startWebFilePicker();
+        },
+        child: Icon(Icons.file_download),
+      ),
       drawer: Drawer(
         child: ListView(
           children: <Widget>[
