@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
 import '../widgets/base_clip_item.dart';
-import '../blocs/provider.dart';
-import '../widgets/image_clip_item.dart';
-import '../widgets/video_clip_item.dart';
+import '../blocs/main_screen_provider.dart';
+import '../widgets/image_item.dart';
+import '../widgets/video_item.dart';
 
 class MainScreen extends StatefulWidget {
   @override
@@ -18,7 +18,7 @@ class _MainScreenState extends State<MainScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final bloc = Provider.of(context);
+    final bloc = MainScreenProvider.of(context);
 
     return Scaffold(
       appBar: AppBar(),
@@ -144,28 +144,28 @@ class _MainScreenState extends State<MainScreen> {
                                     mainAxisSpacing: 10,
                                     crossAxisSpacing: 10,
                                     children: <Widget>[
-                                      ImageClipItem(
+                                      ImageItem(
                                         index: 100,
                                         duration: Duration(minutes: 1),
                                         dataPath:
                                             'https://cdn.pixabay.com/photo/2020/02/28/09/42/willow-4887000_1280.jpg',
                                         name: 'Image #3',
                                       ),
-                                      ImageClipItem(
+                                      ImageItem(
                                         index: 50,
                                         duration: Duration(minutes: 1),
                                         dataPath:
                                             'https://cdn.pixabay.com/photo/2020/02/26/16/30/butterfly-4882217_1280.jpg',
                                         name: 'Image #2',
                                       ),
-                                      ImageClipItem(
+                                      ImageItem(
                                         index: 34,
                                         duration: Duration(minutes: 1),
                                         dataPath:
                                             'https://cdn.pixabay.com/photo/2020/02/27/20/57/dresden-4885833_1280.jpg',
                                         name: 'Image #1',
                                       ),
-                                      VideoClipItem(
+                                      VideoItem(
                                         index: 44,
                                         duration: Duration(minutes: 1),
                                         dataPath:

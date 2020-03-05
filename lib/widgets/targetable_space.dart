@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../blocs/provider.dart';
+import '../blocs/main_screen_provider.dart';
 import 'base_clip_item.dart';
 
 class TargetableSpace extends BaseClipItem {
@@ -22,7 +22,7 @@ class _TargetableSpaceState extends State<TargetableSpace>
 
   @override
   Widget build(BuildContext context) {
-    final bloc = Provider.of(context);
+    final bloc = MainScreenProvider.of(context);
     return StreamBuilder(
       stream: bloc.sendChangePlayList,
       builder: (BuildContext context, snapshot) {

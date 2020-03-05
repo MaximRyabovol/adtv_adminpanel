@@ -4,7 +4,7 @@ import 'package:rxdart/rxdart.dart';
 import '../widgets/targetable_space.dart';
 import '../widgets/base_clip_item.dart';
 
-class Bloc {
+class MainScreenBloc {
   List<BaseClipItem> playList = [];
 
   BehaviorSubject<List<BaseClipItem>> _allPlayListController =
@@ -24,7 +24,7 @@ class Bloc {
 
   Sink<TargetableSpace> get inChangePlayList => _changePlayListController.sink;
 
-  Bloc() {
+  MainScreenBloc() {
     _changePlayListController.listen(handleChangePlayList);
 
     playList.add(TargetableSpace(0));
