@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../blocs/main_screen_bloc.dart';
 import '../widgets/base_clip_item.dart';
 import '../blocs/main_screen_provider.dart';
 import '../widgets/image_item.dart';
@@ -11,15 +12,27 @@ class MainScreen extends StatefulWidget {
 }
 
 class _MainScreenState extends State<MainScreen> {
+  MainScreenBloc bloc;
+
   @override
   void initState() {
     super.initState();
   }
 
   @override
-  Widget build(BuildContext context) {
-    final bloc = MainScreenProvider.of(context);
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    bloc = MainScreenProvider.of(context);
+  }
 
+  @override
+  void dispose() {
+    super.dispose();
+    bloc.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(),
       drawer: Drawer(
